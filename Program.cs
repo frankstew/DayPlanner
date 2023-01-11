@@ -27,10 +27,10 @@ namespace DayPlanner
             CreateEntry();
             break;
           case 2:
-            ViewEntries(DateTime.Today);
+            ViewEntries(DateTime.Today.AddDays(-1));
             break;
           case 3:
-            ViewEntries(DateTime.Today.AddDays(-1));
+            ViewEntries(DateTime.Today);
             break;
           case 4:
             ViewEntries(DateTime.Today.AddDays(1));
@@ -55,11 +55,12 @@ namespace DayPlanner
       Console.WriteLine("Daily Planner");
       Console.WriteLine("-------------");
       Console.WriteLine("1. Create a new entry");
-      Console.WriteLine("2. View entries for today");
-      Console.WriteLine("3. View entries for yesterday");
+      Console.WriteLine("2. View entries for yesterday");
+      Console.WriteLine("3. View entries for today");
       Console.WriteLine("4. View entries for tomorrow");
       Console.WriteLine("5. View entries for a specific day");
       Console.WriteLine("6. Modify entries for a specific day");
+      Console.WriteLine("7. Close day planner");
     }
 
     static int GetMenuChoice()
