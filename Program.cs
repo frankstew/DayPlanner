@@ -10,6 +10,8 @@ namespace DayPlanner
   {
     private static readonly string basePath = "C:\\Users\\Stewartf\\AppData\\Local\\Temp\\DayPlanner\\";
     private static string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+    private static string dateFormat = "dd-MM-yyyy";
+
     public static void Main() 
     {
       Console.WriteLine(userName);
@@ -87,10 +89,14 @@ namespace DayPlanner
 
     static void ViewEntries(DateTime date)
     {
+      if (!CheckEntryExistsForDay(date)) {
+        Console.WriteLine($"No entry for {date:dd-MM-yyyy} exists");
+        return;
+      }
       string filename = GetFilename(date);
       string[] lines = File.ReadAllLines(filename);
       Console.WriteLine("\n");
-      Console.WriteLine($"Tasks for {date:MM/dd/yyyy}: ");
+      Console.WriteLine($"Tasks for {date:dd-MM-yyyy}: ");
       Console.WriteLine("--------------------------------------------------");
       int i = 1;
       foreach (string line in lines)
@@ -105,11 +111,15 @@ namespace DayPlanner
 
     static void ModifyEntry(DateTime date)
     {
+      if (!CheckEntryExistsForDay(date)) {
+        Console.WriteLine($"No entry for {date:dd-MM-yyyy} exists");
+        return;
+      }
       string filename = GetFilename(date);
       string[] lines = File.ReadAllLines(filename);
       List<string> updatedLines = new List<string>(lines);
 
-      Console.WriteLine($"Tasks for {date:MM/dd/yyyy}: ");
+      Console.WriteLine($"Tasks for {date:dd-MM-yyyy}: ");
       int i = 1;
       foreach (string line in lines)
       {
@@ -125,7 +135,7 @@ namespace DayPlanner
       Console.Write("Enter the new task: ");
       string newTask = Console.ReadLine();
 
-      updatedLines[taskNumber - 1] = $"{date:MM/dd/yyyy},{newTask}";
+      updatedLines[taskNumber - 1] = $"{date:dd-MM-yyyy},{newTask}";
 
       File.WriteAllLines(filename, updatedLines);
       Console.WriteLine("Entry modified successfully!");
@@ -133,19 +143,24 @@ namespace DayPlanner
 
     static DateTime GetDate()
     {
-      Console.Write("Enter the date (format: MM/DD/YYYY): ");
+      Console.Write("Enter the date (format: DD-MM-YYYY): ");
       string date = Console.ReadLine();
-      return DateTime.ParseExact(date, "MM/dd/yyyy", CultureInfo.InvariantCulture);
+      return DateTime.ParseExact(date, "dd-MM-yyyy", CultureInfo.InvariantCulture);
     }
 
     static string GetFilename(DateTime date)
     {
-      var filePath =  $"{basePath}{date:MM-dd-yyyy}.txt";
-      if (!File.Exists(filePath)) {
-        throw new FileNotFoundException($"No planner for {date:MM-dd-yyyy}");
-      }
-      return filePath;
+      return $"{basePath}{date:dd-MM-yyyy}.txt";
     }
+
+    static bool CheckEntryExistsForDay(DateTime date) {
+      var filePath =  $"{basePath}{date:dd-MM-yyyy}.txt";
+      if (!File.Exists(filePath)) {
+        return false;
+      }
+      return true;
+    }
+
   }
 }
 
