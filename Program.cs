@@ -52,6 +52,13 @@ namespace DayPlanner
 
     static void DisplayMenu()
     {
+      //new flow:
+      //which day would you like to look at?
+      //*options for yesterday, today, tomorrow, other day, quit*
+      //day's tasks:
+      //*show tasks for day selected, with check boxes like this []/[x]*
+      //what would you like to do?
+      //*options for add, complete, remove, select different day, quit*
       Console.WriteLine("Daily Planner");
       Console.WriteLine("-------------");
       Console.WriteLine("1. Create a new entry");
